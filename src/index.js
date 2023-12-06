@@ -36,6 +36,15 @@ app.get("/products/:id", (req, res) => {
   }
 });
 
+app.get("/users", (req, res) => {
+  res.send({
+    users: [
+      { id: 1, name: "x" },
+      { id: 2, name: "y" },
+    ],
+  });
+});
+
 app.listen(3002, () => {
   console.log(`server is running at 3002`);
 });
