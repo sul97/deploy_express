@@ -1,6 +1,19 @@
 const express = require("express");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
+const mongoURL = process.env.MONGODB_URL || "";
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(mongoURL);
+    console.log("database is connected");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 let products = [
   { id: 1, name: "apple iPhone11", price: 3500 },
@@ -8,6 +21,10 @@ let products = [
   { id: 3, name: "apple iPhone13", price: 3800 },
   { id: 4, name: "apple iPhone14", price: 4000 },
 ];
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send("Welcome to the express server");
@@ -47,4 +64,7 @@ app.get("/users", (req, res) => {
 
 app.listen(3002, () => {
   console.log(`server is running at 3002`);
+   connectDB();
 });
+
+module.exports = app;
