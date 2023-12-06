@@ -20,11 +20,20 @@ app.get("/products", (req, res) => {
 });
 
 app.get("/products/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const product = products.find((p) => p.id === id);
-  res.send({
-    product: product,
-  });
+  try {
+    const id = Number(req.params.id);
+    const product = products.find((product) => product.id === id);
+    if (!product) {
+      return res
+        .status(404)
+        .send({ message: `Product not found with id ${id}` });
+    }
+    res.send({
+      product: product,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 app.listen(3002, () => {
